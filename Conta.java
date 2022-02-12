@@ -1,23 +1,29 @@
 public class Conta {
     private String nome;
     private float saldo;
+    private static Conta instance;
 
-    Conta(String nome, float saldo){
+
+    private Conta(String nome, float saldo){
         this.nome = nome;
         this.saldo = saldo;
-    }
-    Conta(){}
-    Conta(float saldo){
-        this.saldo=saldo;
     }
     String getName(){
         return this.nome;
     }
+    float getSaldo(){
+        return this.saldo;
+    }
+
+    public static Conta Instance(String nome, float saldo){
+        if(Conta.instance == null){
+            Conta.instance = new Conta(nome, saldo);
+        }
+        return Conta.instance;
+    }
+
     public void setName(String n){
         this.nome = n;
-    }
-    public float getSaldo(){
-        return this.saldo;
     }
     public void setSaldo(float n){
         this.saldo = n;
@@ -40,17 +46,16 @@ public class Conta {
         return false;
     }
 
-    public Float consultar(){
-        return getSaldo();
+    public String consultar(){
+        return getName()+"\n"+getSaldo();
     }
 
-    public Boolean transferir(float saldo){
-       if(getSaldo()>=saldo){
-        float saldoTotal = getSaldo()-saldo;
-        setSaldo(saldoTotal);
+    public Boolean transferir(float saldo, Conta user){
+       if(getSaldo()>=saldo && !user.getName().isEmpty()){
+        setSaldo(getSaldo()-saldo);
         return true;
        }
-       else return false;
+       return false;
     }
 
 }

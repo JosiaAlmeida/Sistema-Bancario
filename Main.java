@@ -4,13 +4,21 @@ import java.lang.Thread;
 public class Main{
     public static void main(String[] args) {
         int controller_conta = 0;
-        float Movimento = 0;
+        float Movimento = 0, saldo;
+        String user, userTransf;
         Scanner scanner = new Scanner(System.in);
-        // Conta _conta = new Conta("Josia", 1000);
+        System.out.println("Seu nome: ");
+        user = scanner.nextLine();
+        System.out.println("Saldo: ");
+        saldo = scanner.nextFloat();
 
-        Conta _conta = new Conta();
-        System.out.println("Digite o seu nome de utilizador: ");
-        _conta.setName(scanner.nextLine());
+        if(saldo<20000){
+            System.out.println("Seu saldo nao pode ser inferior a 20.000");
+            return;
+        }
+
+        Conta _conta = Conta.Instance(user, saldo);
+
         System.out.println("O senhor "+_conta.getName()+" tem 4 operacoes");
         while(controller_conta!=5){
             System.out.println("Para continuar selecione uma das opções do sistema\n");
@@ -21,7 +29,7 @@ public class Main{
             System.out.println("Para Sair do sistema selecione 5\n");
             controller_conta = scanner.nextInt();switch (controller_conta) {
                 case 1:
-                    System.out.println("Saldo: "+_conta.consultar());
+                    System.out.println("Dados da conta: "+_conta.consultar());
                     break;
                 case 2:
                     System.out.println("Valor a depositar: ");
@@ -34,7 +42,12 @@ public class Main{
                 case 3:
                     System.out.println("Quanto deseja transferir?");
                     Movimento = scanner.nextFloat();
-                    if(_conta.transferir(Movimento)) System.out.println("Transferencia feita com successo");
+                    System.out.println("Nome do usuario: ");
+                    userTransf = scanner.next();
+                    // Conta _conta_Two = new Conta(userTransf, Movimento);
+                    if(_conta.transferir(Movimento, Conta.Instance(userTransf, Movimento))){
+                        System.out.println("Transferencia feita com successo");
+                    }
                     else System.out.println("Saldo insuficiente, faça um deposito");
                     break;
                 case 4:
